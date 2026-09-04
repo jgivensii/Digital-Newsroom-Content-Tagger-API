@@ -166,7 +166,9 @@ Cascade deletes remove articles + TagExtractionRecord
 
 - created_at
 
-- updated_atRelationships:
+- updated_at
+  
+- Relationships:
 
   -  1 article → 1 image
 
