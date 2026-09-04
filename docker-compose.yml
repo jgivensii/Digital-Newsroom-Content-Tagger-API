@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: newsroom
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+
+      CONTENT_AI_BUCKET_NAME: ${CONTENT_AI_BUCKET_NAME}
+      REKOGNITION_MIN_CONFIDENCE: ${REKOGNITION_MIN_CONFIDENCE}
+      COMPREHEND_MIN_CONFIDENCE: ${COMPREHEND_MIN_CONFIDENCE}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flask_api:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/newsroom
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+
+      CONTENT_AI_BUCKET_NAME: ${CONTENT_AI_BUCKET_NAME}
+      REKOGNITION_MIN_CONFIDENCE: ${REKOGNITION_MIN_CONFIDENCE}
+      COMPREHEND_MIN_CONFIDENCE: ${COMPREHEND_MIN_CONFIDENCE}
+  
+    ports:
+      - "5000:5000"
+
+  fastapi_client:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+
+      CONTENT_AI_BUCKET_NAME: ${CONTENT_AI_BUCKET_NAME}
+      REKOGNITION_MIN_CONFIDENCE: ${REKOGNITION_MIN_CONFIDENCE}
+      COMPREHEND_MIN_CONFIDENCE: ${COMPREHEND_MIN_CONFIDENCE}
+    
+    ports:
+      - "8000:8000"
