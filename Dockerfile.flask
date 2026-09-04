@@ -1,20 +1,15 @@
-# Dockerfile.flask
-# Single-stage build — no binary extensions that require a separate compile stage.
-
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install build tools needed by some wheels (e.g. greenlet for SQLAlchemy)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         gcc \
         libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy package manifest and install dependencies first (layer-cache friendly)
+
 COPY pyproject.toml .
 
-# Copy ALL packages that pyproject.toml declares so setuptools can find them
 COPY content_api/ content_api/
 COPY models_api/ models_api/
 COPY migrations/ migrations/
@@ -23,7 +18,6 @@ RUN pip install --upgrade pip \
  && pip install --no-cache-dir .\
  && pip install --no-cache-dir .[test]
 
-# Copy the startup script and make it executable
 COPY entrypoint.flask.sh /entrypoint.flask.sh
 RUN chmod +x /entrypoint.flask.sh
 
