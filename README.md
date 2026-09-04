@@ -6,7 +6,7 @@ results are stored deterministically in PostgreSQL.
 This repository contains:
 
 - Flask 3.x admin API (`content_api/`)
-- FastAPI 0.110+ client API (`client_api/`)
+- FastAPI 0.130+ client API (`client_api/`)
 - SQLAlchemy 2.0 models + Alembic migrations
 - Pydantic v2 request/response validation
 - boto3 client wrappers for Comprehend, Rekognition, and S3
