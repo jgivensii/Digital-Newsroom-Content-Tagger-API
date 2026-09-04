@@ -60,15 +60,17 @@ This repository contains:
 ### Backend Dependencies
 
 ```code
-pip install .Dependencies are defined in pyproject.toml.
+pip install .
 ```
+Dependencies are defined in pyproject.toml.
+
 ### Running Locally 
 (Docker)
 ```code
 docker compose up --buildFlask
 ```
-API → http://localhost:5000Fast
-API client → http://localhost:8000
+API → http://localhost:5000
+FastAPI client → http://localhost:8000
 PostgreSQL → localhost:5432
 
 ### Environment Variables
@@ -142,7 +144,9 @@ Cascade deletes remove articles + TagExtractionRecord
 
 - created_at
 
-- updated_atRelationships: 1 publication → many articles
+- updated_at
+  
+- Relationships: 1 publication → many articles
 
 **Article**
 
