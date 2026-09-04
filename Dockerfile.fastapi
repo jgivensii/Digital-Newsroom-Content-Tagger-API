@@ -1,5 +1,3 @@
-# Dockerfile.fastapi
-# Single-stage build — all packages are pure Python, no separate compile stage needed.
 
 FROM python:3.11-slim
 
@@ -9,10 +7,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy package manifest and install dependencies first (layer-cache friendly)
+
 COPY pyproject.toml .
 
-# client_api imports from models_api — both must be present
 COPY client_api/ client_api/
 COPY models_api/ models_api/
 
